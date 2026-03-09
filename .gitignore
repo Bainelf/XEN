@@ -12,3 +12,6 @@ __pycache__/
 flux_dump.txt
 servers.json
 secret.txt
+servers.json
+secret.txt
+*.db

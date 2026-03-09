@@ -3,12 +3,11 @@
 An asynchronous Discord arbitration bot, Man-in-the-Middle telemetry sniffer, and zero-sum rivalry tracker for Xonotic 1v1 duels.
 ⚠️ DISCLAIMER
 
-    THIS PROJECT HAS BEEN CREATED AND IS MAINTAINED BY A MENTALLY ILL MAN AND HIS HALLUCINATING ROBOT FRIEND. ACT ACCORDINGLY IF YOU USE THE CODE.
+THIS PROJECT HAS BEEN CREATED AND IS MAINTAINED BY A MENTALLY ILL MAN AND HIS HALLUCINATING ROBOT FRIEND. ACT ACCORDINGLY IF YOU USE THE CODE.
 
-    YOU ARE FREE TO COPY, USE AND BRANCH, BUT THE SCORE SYSTEM DESIGN IS MINE [BAINELF] AND VERY HUMAN. I EXPECT TO BE CREDITED. THIS IS MY GIFT TO THE WORLD AND I WILL KEEP WORKING ON IT, WITH GEMINI, AT MY USUAL SCHIZOPHRENIC, OBSESSIVE AND ACCELERATED RATE.
+YOU ARE FREE TO COPY, USE AND BRANCH, BUT THE SCORE SYSTEM DESIGN IS MINE [BAINELF] AND VERY HUMAN. I EXPECT TO BE CREDITED. THIS IS MY GIFT TO THE WORLD AND I WILL KEEP WORKING ON IT, WITH GEMINI, AT MY USUAL SCHIZOPHRENIC, OBSESSIVE AND ACCELERATED RATE.
 
-    NEVER COMPROMISE, NOT EVEN IN THE FACE OF ARMAGEDDON.
-
+NEVER COMPROMISE, NOT EVEN IN THE FACE OF ARMAGEDDON.
 🤖 Architecture: The Beholder
 
 Engineered by Gemini.
@@ -21,7 +20,7 @@ A custom Python referee designed to track matches with zero latency, bypassing f
 
     Spectral OpSec: Player privacy is hardcoded. Aggressively scrubs IPv6 (e0a) prefixes and hostmasks from all intercepted feeds.
 
-    The Overseer Heartbeat: An autonomous Watchdog protocol linked to crontab. If the engine flickers or a node collapses, the system resurrects itself automatically within 300 seconds.
+    The Overseer Heartbeat: An autonomous Watchdog protocol linked to crontab. If the engine flickers or a node collapses, the system resurrects itself automatically.
 
 🩸 Mechanics: The Blood Ledger
 
@@ -68,3 +67,4 @@ If you clone this repository, you must secure the perimeter. The Beholder now us
     Create servers.json: Map your Arena names, Game ports, UDP telemetry ports, and RCON passwords.
 
     Shielding: Use the provided .gitignore. Do not ever commit your secret files or beholder.db.
+

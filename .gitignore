@@ -10,3 +10,5 @@ __pycache__/
 *.save
 *.save.*
 flux_dump.txt
+servers.json
+secret.txt

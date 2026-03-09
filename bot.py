@@ -1,5 +1,3 @@
-import re
-import re
 # ==============================================================================
 # 👁️ THE BEHOLDER - EMERALD GAZE (v20.8.5-OMNISCIENCE)
 # ==============================================================================
@@ -45,11 +43,13 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+# 🛡️ THE SHIELDS
 RE_COLOR = re.compile(r'\^([0-9]|x[0-9a-fA-F]{3})')
-RE_IP_SCRUB = re.compile(r'^([0-9a-fA-F\.:]{4,}:)+')
+RE_MASK_SCRUB = re.compile(r'^[\[\]\da-fA-F\.:]+:')
 
 def clean_xon(raw_text):
-    return RE_IP_SCRUB.sub('', RE_COLOR.sub('', raw_text).strip())
+    # Just strips the colors for the initial log processing
+    return RE_COLOR.sub('', raw_text).strip()
 
 def is_human(name):
     if not name or len(name) < 2: return False
@@ -206,7 +206,11 @@ class ArenaTracker:
                         try:
                             d = raw.split(":join:")[1].split(":", 3)
                             if len(d) >= 4:
-                                pid, pname = d[0].strip(), d[3].strip()
+                                pid, raw_pname = d[0].strip(), d[3].strip()
+                                
+                                # 🛡️ THE CHOKEPOINT: Scrub the mask off the name before it touches the bot's memory
+                                pname = RE_MASK_SCRUB.sub('', raw_pname)
+
                                 self.state["id_map"][pid] = pname
                                 self.state["conn_map"][pid] = pname
                                 self.state["frags"][pid] = self.state["frags"].get(pid, 0)
@@ -225,7 +229,7 @@ class ArenaTracker:
                         try:
                             conn_id = raw.split(":part:")[1].split(":")[0].strip()
                             if conn_id in self.state["conn_map"]:
-                                pname = self.state["conn_map"][conn_id]
+                                pname = self.state["conn_map"][conn_id] # pname is already scrubbed from the join step
                                 if pname in self.state["welcomed"]:
                                     if pname in self.state["disconnect_tasks"]: self.state["disconnect_tasks"][pname].cancel()
                                     self.state["disconnect_tasks"][pname] = bot.loop.create_task(self.confirm_disconnect(pname))

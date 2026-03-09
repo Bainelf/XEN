@@ -1,0 +1,12 @@
+# OpSec: Never upload secrets, databases, or logs
+secret.txt
+*.db
+*.log
+
+# Python Environment
+venv/
+__pycache__/
+*.pyc
+*.save
+*.save.*
+flux_dump.txt

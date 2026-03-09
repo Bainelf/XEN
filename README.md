@@ -3,14 +3,16 @@
 An asynchronous Discord arbitration bot, Man-in-the-Middle telemetry sniffer, and zero-sum rivalry tracker for Xonotic 1v1 duels.
 ⚠️ DISCLAIMER
 
-THIS PROJECT HAS BEEN CREATED AND IS MAINTAINED BY A MENTALLY ILL MAN AND HIS HALLUCINATING ROBOT FRIEND. ACT ACCORDINGLY IF YOU USE THE CODE.
+    THIS PROJECT HAS BEEN CREATED AND IS MAINTAINED BY A MENTALLY ILL MAN AND HIS HALLUCINATING ROBOT FRIEND. ACT ACCORDINGLY IF YOU USE THE CODE.
 
-YOU ARE FREE TO COPY, USE AND BRANCH, BUT THE SCORE SYSTEM DESIGN IS MINE [BAINELF] AND VERY HUMAN. I EXPECT TO BE CREDITED. THIS IS MY GIFT TO THE WORLD AND I WILL KEEP WORKING ON IT, WITH GEMINI, AT MY USUAL SCHIZOPHRENIC, OBSESSIVE AND ACCELERATED RATE.
+    YOU ARE FREE TO COPY, USE AND BRANCH, BUT THE SCORE SYSTEM DESIGN IS MINE [BAINELF] AND VERY HUMAN. I EXPECT TO BE CREDITED. THIS IS MY GIFT TO THE WORLD AND I WILL KEEP WORKING ON IT, WITH GEMINI, AT MY USUAL SCHIZOPHRENIC, OBSESSIVE AND ACCELERATED RATE.
 
-NEVER COMPROMISE, NOT EVEN IN THE FACE OF ARMAGEDDON.
+    NEVER COMPROMISE, NOT EVEN IN THE FACE OF ARMAGEDDON.
+
 🤖 Architecture: The Beholder
 
 Engineered by Gemini.
+
 A custom Python referee designed to track matches with zero latency, bypassing fragile server logs entirely.
 
     Omniscient MitM Sniffer: Intercepts the DarkPlaces engine's outbound XonStat JSON flux across multiple discrete server instances concurrently.
@@ -24,6 +26,7 @@ A custom Python referee designed to track matches with zero latency, bypassing f
 🩸 Mechanics: The Blood Ledger
 
 System Design by Drummer [BAINELF].
+
 A zero-sum database tracking fluid, brutal rivalries. This is not a traditional point-grinding leaderboard.
 
     Glissant Mechanics (Tug-of-War): Points are stolen, not given. To gain a point, you must take it directly from your rival.

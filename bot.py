@@ -56,7 +56,7 @@ def clean_xon(raw_text):
 def is_human(name):
     if not name or len(name) < 2: return False
     n = name.lower()
-    return "[guard]" not in n and n not in ["bot", "none", "unknown"]
+    return "[guard]" not in n and "[blood-bot]" not in n and n not in ["bot", "none", "unknown"]
 
 # --- GLOBAL HELPERS ---
 async def global_broadcast(content=None, embed=None, mention_drilla=False):
@@ -143,7 +143,7 @@ class ArenaTracker:
         await asyncio.sleep(45)
         if pname in self.state["welcomed"]:
             self.state["welcomed"].remove(pname)
-            await global_broadcast(content=f"💨 The arena grows cold. `{pname}` has disconnected from **{self.name}**.")
+            await global_broadcast(content=f"💨 The arena grows cold. `{pname}` has disconnected from **{str(self.name)}**.")
             self.rcon_say(f"^2[THE BEHOLDER] ^7The arena grows cold... ^3{pname}^7 has fled.")
         if pname in self.state["disconnect_tasks"]: del self.state["disconnect_tasks"][pname]
 
@@ -251,12 +251,12 @@ class ArenaTracker:
 
                                 if is_human(pname) and pname not in self.state["welcomed"]:
                                     self.state["welcomed"].add(pname)
-                                    bot.loop.create_task(global_broadcast(content=f"Human blood detected. `{pname}` entered **{self.name}**.", mention_drilla=True))
+                                    bot.loop.create_task(global_broadcast(content=f"Human blood detected. `{pname}` entered **{str(self.name)}**.", mention_drilla=True))
                                     self.rcon_say(f"^2[THE BEHOLDER] ^7Human blood detected: ^3{pname}")
                                     
                                     # --- THE IN-GAME MATCHMAKING PING ---
                                     if self.name != "BLOODBATH":
-                                        self.rcon_say("^3[MATCHMAKING] ^7Online. The Discord has been notified, please wait for an opponent.")
+                                        self.rcon_say("^2[MATCHMAKING] ^7Online."); self.rcon_say("The Discord has been notified, please wait for an opponent.")
                         except Exception: pass
 
                     elif ":part:" in raw:

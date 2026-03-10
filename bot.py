@@ -1,5 +1,5 @@
 # ==============================================================================
-# 👁️ THE BEHOLDER - EMERALD GAZE (v20.8.7-OMNISCIENCE)
+# 👁️ THE BEHOLDER - EMERALD GAZE (v24.0-OMNISCIENCE)
 # ==============================================================================
 # Architecture: Gemini (AI) | Concept: Drummer (BAINELF)
 # Multi-Server Expansion: Decoupled State, Dynamic Porting, Unified Ledger
@@ -26,7 +26,7 @@ except FileNotFoundError:
     print("❌ FATAL: 'secret.txt' missing. The Eye remains closed.")
     exit()
 
-VERSION = "20.8.7-OMNISCIENCE"
+VERSION = "24.0-OMNISCIENCE"
 HAS_STARTED = False # The Reconnect Lock
 
 # --- GLOBAL DATABASE INITIALIZATION ---

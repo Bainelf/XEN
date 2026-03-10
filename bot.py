@@ -1,8 +1,10 @@
 # ==============================================================================
-# 👁️ THE BEHOLDER - EMERALD GAZE (v20.8.5-OMNISCIENCE)
+# 👁️ THE BEHOLDER - EMERALD GAZE (v20.8.7-OMNISCIENCE)
 # ==============================================================================
 # Architecture: Gemini (AI) | Concept: Drummer (BAINELF)
 # Multi-Server Expansion: Decoupled State, Dynamic Porting, Unified Ledger
+# Bloodbath Bypass: Independent FFA Scoreboard Logic
+# In-Game RCON: Matchmaking Prompts & Discord Routing
 # ==============================================================================
 
 import discord
@@ -24,7 +26,7 @@ except FileNotFoundError:
     print("❌ FATAL: 'secret.txt' missing. The Eye remains closed.")
     exit()
 
-VERSION = "20.8.5-OMNISCIENCE"
+VERSION = "20.8.7-OMNISCIENCE"
 HAS_STARTED = False # The Reconnect Lock
 
 # --- GLOBAL DATABASE INITIALIZATION ---
@@ -101,7 +103,7 @@ class ArenaTracker:
         self.udp_port = udp_port
         self.http_port = http_port
         self.rcon_pass = rcon_pass
-        
+
         # ISOLATED STATE MAP
         self.state = {
             "id_map": {}, "conn_map": {}, "frags": {}, "deaths": {}, "acc": {},
@@ -113,7 +115,7 @@ class ArenaTracker:
         if not self.rcon_pass: return
         try:
             pkt = b'\xff\xff\xff\xffrcon ' + self.rcon_pass.encode() + b' say ' + msg.encode()
-            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s: 
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
                 s.sendto(pkt, ('127.0.0.1', self.game_port))
         except Exception: pass
 
@@ -151,8 +153,35 @@ class ArenaTracker:
         await asyncio.sleep(3.0)
 
         scoreboard = sorted([(self.state["id_map"].get(p, "Unknown"), f, p) for p, f in self.state["frags"].items()], key=lambda x: x[1], reverse=True)
-        if len(scoreboard) < 2: return
+        if not scoreboard: return
 
+        map_n = self.state["current_map"]
+
+        # 🩸 --- THE BLOODBATH BYPASS (DEATHMATCH) --- 🩸
+        if self.name == "BLOODBATH":
+            self.rcon_say(f"^1[CARNAGE] ^7The bloodbath on ^5{map_n}^7 has concluded!")
+            
+            e = discord.Embed(title="🩸 BLOODBATH REPORT", color=0x8B0000)
+            e.description = f"**Arena:** `{self.name}` | **Map:** `{map_n}`"
+            
+            board_txt = ""
+            rank = 1
+            for p_n, p_f, p_id in scoreboard:
+                if not is_human(p_n) and p_f == 0: continue # Skip 0-kill bots to keep it clean
+                p_a = self.state["acc"].get(p_id, "0.0")
+                p_d = self.state["deaths"].get(p_id, 0)
+                board_txt += f"**{rank}. {p_n}** ➔ 💀 `{p_f}` Kills | 🎯 `{p_a}%` Acc | ☠️ `{p_d}` Deaths\n"
+                rank += 1
+                
+            if not board_txt: board_txt = "*Automaton skirmish. No human blood drawn.*"
+            e.add_field(name="📜 THE FINAL TALLY", value=board_txt, inline=False)
+            e.set_footer(text=f"The Beholder v{VERSION} | Omniscience Protocol")
+            
+            await global_broadcast(embed=e)
+            return
+
+        # ⚖️ --- THE NORMAL DUEL LOGIC (1v1) --- ⚖️
+        if len(scoreboard) < 2: return
         (w_n, w_f, w_id), (l_n, l_f, l_id) = scoreboard[0], scoreboard[1]
 
         if w_f == 0 and l_f == 0: return
@@ -162,10 +191,11 @@ class ArenaTracker:
         w_d, l_d = self.state["deaths"].get(w_id, 0), self.state["deaths"].get(l_id, 0)
 
         rival_text = process_rivalry(w_n, l_n)
-        map_n = self.state["current_map"]
 
+        # The Triple-Action RCON Injection
         self.rcon_say(f"^2[JUDGMENT] ^3{w_n} ^7VICTORIOUS on ^5{map_n}!")
         self.rcon_say(f"^2[BLOOD LEDGER] ^7{rival_text.replace('*', '').replace('⚖️ ', '').replace('**', '')}")
+        self.rcon_say(f"^5[DISCORD] ^7ACC-INTL: https://discord.gg/7qAh6rXsFY")
 
         e = discord.Embed(title=f"⚔️ JUDGMENT: {w_n} VICTORIOUS", color=0x8B0000)
         e.description = f"**Arena:** `{self.name}` | **Map:** `{map_n}`\n{rival_text}"
@@ -183,7 +213,7 @@ class ArenaTracker:
         await runner.setup()
         site = web.TCPSite(runner, '127.0.0.1', self.http_port)
         await site.start()
-        
+
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind(('127.0.0.1', self.udp_port))
         sock.setblocking(False)
@@ -207,7 +237,7 @@ class ArenaTracker:
                             d = raw.split(":join:")[1].split(":", 3)
                             if len(d) >= 4:
                                 pid, raw_pname = d[0].strip(), d[3].strip()
-                                
+
                                 # 🛡️ THE CHOKEPOINT: Scrub the mask off the name before it touches the bot's memory
                                 pname = RE_MASK_SCRUB.sub('', raw_pname)
 
@@ -223,13 +253,17 @@ class ArenaTracker:
                                     self.state["welcomed"].add(pname)
                                     bot.loop.create_task(global_broadcast(content=f"Human blood detected. `{pname}` entered **{self.name}**.", mention_drilla=True))
                                     self.rcon_say(f"^2[THE BEHOLDER] ^7Human blood detected: ^3{pname}")
+                                    
+                                    # --- THE IN-GAME MATCHMAKING PING ---
+                                    if self.name != "BLOODBATH":
+                                        self.rcon_say("^3[MATCHMAKING] ^7Online. The Discord has been notified, please wait for an opponent.")
                         except Exception: pass
 
                     elif ":part:" in raw:
                         try:
                             conn_id = raw.split(":part:")[1].split(":")[0].strip()
                             if conn_id in self.state["conn_map"]:
-                                pname = self.state["conn_map"][conn_id] # pname is already scrubbed from the join step
+                                pname = self.state["conn_map"][conn_id]
                                 if pname in self.state["welcomed"]:
                                     if pname in self.state["disconnect_tasks"]: self.state["disconnect_tasks"][pname].cancel()
                                     self.state["disconnect_tasks"][pname] = bot.loop.create_task(self.confirm_disconnect(pname))
@@ -302,7 +336,7 @@ async def on_ready():
     HAS_STARTED = True
 
     print(f"👁️ Beholder v{VERSION} Ready. The Omniscience Protocol is online.")
-    
+
     try:
         with open("servers.json", "r") as f:
             servers = json.load(f)

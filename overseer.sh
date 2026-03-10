@@ -32,5 +32,16 @@ if ! screen -list | grep -q "arena_beta"; then
     screen -dmS arena_beta bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated +serverconfig beta.cfg -sessionid beta"
 fi
 
-echo "✅ All systems operational."
+# 5. CHECK/START GAMMA
+if ! screen -list | grep -q "arena_gamma"; then
+    echo "⚔️ Starting Arena Gamma..."
+    screen -dmS arena_gamma bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated +serverconfig gamma.cfg -sessionid gamma"
+fi
 
+# 6. CHECK/START DELTA (BLOODBATH)
+if ! screen -list | grep -q "arena_delta"; then
+    echo "⚔️ Starting Arena Delta (Bloodbath)..."
+    screen -dmS arena_delta bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated +serverconfig delta.cfg -sessionid delta"
+fi
+
+echo "✅ All systems operational."

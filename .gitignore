@@ -1,18 +1,44 @@
-# OpSec: Never upload secrets, databases, or logs
-secret.txt
-*.db
-*.log
+# 👁️ OMNISCIENCE SECURITY MASK
 
-# Python Environment
-venv/
-__pycache__/
-*.pyc
-*.save
-*.save.*
-flux_dump.txt
-servers.json
+# --- Credentials & Secrets ---
+# NEVER commit these. They contain your Discord Token and RCON Passwords.
 secret.txt
 servers.json
-secret.txt
+*.cfg
+!README.md
+
+# --- Databases & Persistence ---
+# This keeps your player rankings and match history private.
 *.db
-overseer.log
+*.db-journal
+*.sqlite
+
+# --- Backups & Archives ---
+# Prevents massive backup files from clogging your GitHub.
+Backups/
+*.tar.gz
+*.zip
+*.7z
+
+# --- Python Environment ---
+venv/
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- OS & IDE Junk ---
+.DS_Store
+.thumbs
+.db
+desktop.ini
+.vscode/
+.idea/
+
+# --- Logs ---
+# Keep the clutter out of the repo.
+*.log
+alpha/
+beta/
+gamma/
+delta/

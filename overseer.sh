@@ -1,47 +1,38 @@
 #!/bin/bash
+# 👁️ OMNISCIENCE OVERSEER v20.8.7 (STABLE CLUSTER)
 
 # --- CONFIGURATION ---
 PATH_BOT="/root/The_Beholder"
 PATH_XONOTIC="/home/xonotic/Xonotic"
 
-# 1. KILL EVERYTHING (If "wipe" argument is passed)
+# 1. THE NUCLEAR WIPE
 if [ "$1" == "wipe" ]; then
-    echo "🧹 Wiping all sessions..."
-    pkill -f xonotic
-    pkill -f bot.py
-    killall screen
+    echo "🧹 Wiping all sessions and killing ghost processes..."
+    pkill -9 -f xonotic-linux64-dedicated
+    pkill -9 -f bot.py
+    screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs -r screen -X -S quit
     screen -wipe
-    sleep 2
+    sleep 3
 fi
 
-# 2. CHECK/START BEHOLDER
+# 2. START BEHOLDER
 if ! screen -list | grep -q "beholder"; then
     echo "👁️ Starting Beholder..."
     screen -dmS beholder bash -c "cd $PATH_BOT && source venv/bin/activate && python3 bot.py"
 fi
 
-# 3. CHECK/START ALPHA
-if ! screen -list | grep -q "arena_alpha"; then
-    echo "⚔️ Starting Arena Alpha..."
-    screen -dmS arena_alpha bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated +serverconfig server.cfg -sessionid alpha"
-fi
+# 3. START ARENAS (Isolated Sessions)
+# Alpha
+screen -dmS arena_alpha bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated -sessionid alpha -config server.cfg"
 
-# 4. CHECK/START BETA
-if ! screen -list | grep -q "arena_beta"; then
-    echo "⚔️ Starting Arena Beta..."
-    screen -dmS arena_beta bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated +serverconfig beta.cfg -sessionid beta"
-fi
+# Beta
+screen -dmS arena_beta bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated -sessionid beta -config beta.cfg"
 
-# 5. CHECK/START GAMMA
-if ! screen -list | grep -q "arena_gamma"; then
-    echo "⚔️ Starting Arena Gamma..."
-    screen -dmS arena_gamma bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated +serverconfig gamma.cfg -sessionid gamma"
-fi
+# Gamma
+screen -dmS arena_gamma bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated -sessionid gamma -config gamma.cfg"
 
-# 6. CHECK/START DELTA (BLOODBATH)
-if ! screen -list | grep -q "arena_delta"; then
-    echo "⚔️ Starting Arena Delta (Bloodbath)..."
-    screen -dmS arena_delta bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated +serverconfig delta.cfg -sessionid delta"
-fi
+# Delta (Bloodbath)
+screen -dmS arena_delta bash -c "cd $PATH_XONOTIC && ./xonotic-linux64-dedicated -sessionid delta -config delta.cfg"
 
-echo "✅ All systems operational."
+echo "✅ All 4 arenas and the Beholder are synchronized."
+

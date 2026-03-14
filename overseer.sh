@@ -28,3 +28,4 @@ sleep 3
 screen -dmS arena_delta bash -c "cd $PATH_XONOTIC && ./xonotic-delta -userdir $PATH_XONOTIC/delta"
 
 echo "✅ Scorched Earth Cluster Synchronized."
+

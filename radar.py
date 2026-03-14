@@ -5,3 +5,4 @@ print("👁️ RADAR BRUT ACTIF - J'affiche TOUT ce qui passe...")
 while True:
     data, _ = s.recvfrom(4096)
     print(data.decode('utf-8', errors='ignore').strip())
+

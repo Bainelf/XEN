@@ -6,8 +6,8 @@ PATH_XONOTIC="/home/xonotic/Xonotic"
 
 if [ "$1" == "wipe" ]; then
     echo "🧹 Wiping all sessions..."
-    pkill -9 -f xonotic-
-    pkill -9 -f bot.py
+    pkill -15 -f xonotic-
+    pkill -15 -f bot.py
     screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs -r screen -X -S quit
     screen -wipe
     sleep 3

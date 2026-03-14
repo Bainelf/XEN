@@ -1,24 +1,25 @@
 # 👁️ OMNISCIENCE SECURITY MASK
 
 # --- Credentials & Secrets ---
-# NEVER commit these. They contain your Discord Token and RCON Passwords.
 secret.txt
 servers.json
 *.cfg
-!README.md
 
 # --- Databases & Persistence ---
-# This keeps your player rankings and match history private.
 *.db
 *.db-journal
 *.sqlite
+*.sqlite3
 
-# --- Backups & Archives ---
-# Prevents massive backup files from clogging your GitHub.
+# --- Backups, Archives & Trash ---
 Backups/
 *.tar.gz
 *.zip
 *.7z
+*.save
+*.bak
+*.swp
+*~
 
 # --- Python Environment ---
 venv/
@@ -27,19 +28,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# --- OS & IDE Junk ---
-.DS_Store
-.thumbs
-.db
-desktop.ini
-.vscode/
-.idea/
-
-# --- Logs ---
-# Keep the clutter out of the repo.
+# --- Logs & Arena Instances ---
 *.log
 alpha/
 beta/
 gamma/
 delta/
+
+# --- OS & IDE Junk ---
+.DS_Store
+.thumbs
+desktop.ini
+.vscode/
+.idea/
 

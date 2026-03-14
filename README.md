@@ -1,66 +1,64 @@
-# 👁️ THE BEHOLDER - EMERALD GAZE (v24.0-OMNISCIENCE)
+# 👁️ THE BEHOLDER
+**Omniscience Protocol (v25 Legacy)**
 
-<div align="center">
-  <h3>⚠️ DISCLAIMER</h3>
-  <p>
-    THIS PROJECT HAS BEEN CREATED AND IS MAINTAINED BY A MENTALLY ILL MAN AND HIS HALLUCINATING ROBOT FRIEND.<br><br>
-    ACT ACCORDINGLY IF YOU USE THE CODE.<br><br>
-    YOU ARE FREE TO COPY, USE AND BRANCH, BUT THE SCORE SYSTEM DESIGN IS MINE [BAINELF] AND VERY MUCH HUMAN MADE.<br><br>
-    I EXPECT TO BE CREDITED.<br><br>
-    THIS IS MY GIFT TO THE WORLD AND I WILL KEEP WORKING ON IT, WITH GEMINI, AT MY USUAL SCHIZOPHRENIC, OBSESSIVE AND ACCELERATED RATE.<br><br>
-    NEVER COMPROMISE, NOT EVEN IN THE FACE OF ARMAGEDDON.
-  </p>
-</div>
+> Standard leaderboards are participation trophies. 
+> Glory is a finite resource. 
+> For you to rise, someone else must fall.
 
----
-
-## ⚡ v24.0 PATCH NOTES (SCORCHED EARTH)
-* **Total Architectural Isolation:** Servers now run via unique binaries (`xonotic-alpha`, `beta`, `gamma`, `delta`) to prevent process locking.
-* **Filesystem Sandboxing:** Implementation of `-userdir` for each arena to ensure complete separation of logs, configs, and temporary data.
-* **UDP Identity Lock:** Each server now streams its console logs to a unique local port (**27000-27006**). No more "Duel 1" identity ghosting in Discord.
-* **Improved RCON Injection:** Matchmaking messages are now dual-line and formatted in **Emerald Green (^2)** for high-visibility.
-* **Bloodbath Optimization:** Automatic filtering of `[BLOOD-BOT]` join/part notifications from the Discord feed. Bloodbath (Delta) utilizes dynamic map rotation.
-* **Process Stability:** `overseer.sh` updated with v24 logical wipes and synchronized binary launches.
+## ⚙️ Overview
+The Beholder is a multi-server Discord bot for Xonotic. 
+It operates completely outside the game engine. 
+It passively reads UDP network packets and HTTP XonStat pipelines. 
+It monitors Alpha, Beta, Gamma, and Delta servers simultaneously. 
+It enforces a zero-sum, competitive Blood Ledger. 
+Players cannot endlessly farm points. 
+They must steal them directly from active rivals.
 
 ---
 
-## 🏗️ SYSTEM ARCHITECTURE
+## 🩸 Core Architecture & Physical Laws
 
-    /home/xonotic/Xonotic/ (Root)
-    ├── xonotic-alpha  ────► [Port 26000] ──► -userdir alpha/
-    ├── xonotic-beta   ────► [Port 26001] ──► -userdir beta/
-    ├── xonotic-gamma  ────► [Port 26002] ──► -userdir gamma/
-    └── xonotic-delta  ────► [Port 26003] ──► -userdir delta/ (Bloodbath Mode)
-           │
-           └─► Each binary is ISOLATED via -userdir. 
-               No shared memory. No shared configs. No identity leaks.
-    
-    /root/The_Beholder/ (Intelligence)
-    ├── bot.py (The Brain)
-    ├── beholder.db (The Memory)
-    ├── overseer.sh (The Heart) ──► Manages the 5 Screen Sockets
-    └── servers.json (The Maps) ──► Points to the RCON/UDP Ports
+* **Zero-Sum Economy:** Every 1v1 matchup is a closed 3-point loop. Maxed rivalries force the winner to steal a point from the loser.
+* **7-Day Hemorrhage:** Inactive rivalries rot. Seven days of silence bleeds one point back into the void.
+* **Ironclad Identity:** The database strips all cryptographic masks. It forces absolute uppercase identities across all SQL queries. Alternate casings cannot be used to split your stats.
+* **Omniscience Anti-Spoofing:** The UDP log parser is strictly filtered. In-game chat exploits are actively ignored. Kills cannot be faked.
+* **Live RCON Summoning:** The engine actively pings the Xonotic servers. Stepping into an empty arena broadcasts a matchmaking signal to Discord.
 
 ---
 
-## 🛰️ DATA FLOW (OMNISCIENCE PROTOCOL)
+## 🗺️ System Geometry (ASCII Blueprint)
 
-        [ DISCORD ] <───────┐
-             │              │
-        [ BOT.PY ] <──┐     │ (RCON/UDP Stats)
-             │        │     │
-       ┌─────┴────────┼─────┼──────────┐
-       │              │     │          │
-    [ALPHA]        [BETA] [GAMMA]   [DELTA]
-    (26000)        (26001) (26002)   (26003)
-       │              │     │          │
-    [PORT 27000]   [27002] [27004]   [27006] <── BOT LISTENS HERE
-
----
-
-## 🔧 QUICK COMMANDS
-- **Ignition / Total Wipe:** `/root/The_Beholder/overseer.sh wipe`
-- **Monitor the Brain:** `screen -r beholder`
-- **Audit Network Ports:** `netstat -tulpn | grep xonotic`
-
-**The Omniscience Protocol is Online. The Borderworld is Secure.**
+```text
+/root/The_Beholder/
+│
+├── 👁️ THE ENGINE
+│   ├── bot.py                # Core Engine (v25 Legacy) | Anti-Spoof, 5s Staging, 7-Day Decay
+│   ├── radar.py              # Auxiliary Tool (Network monitoring)
+│   └── sniffer.py            # Auxiliary Tool (Packet sniffing)
+│
+├── 🩸 THE BLOOD LEDGER (GHOSTED - HIDDEN FROM GIT)
+│   └── beholder.db           # SQLite Database | Upper-cased identities, Rivalry points
+│
+├── 🛡️ THE OPSEC VAULT (GHOSTED - HIDDEN FROM GIT)
+│   ├── secret.txt            # Discord API Token & Global Secrets
+│   └── servers.json          # RCON Passwords & Port Maps (Alpha, Beta, Gamma, Delta)
+│
+├── ⚙️ THE CLUSTER MANAGEMENT
+│   ├── overseer.sh           # Daemon Manager | Graceful SIGTERM (-15) enabled
+│   ├── overseer.log          # System output for process crashes/restarts
+│   └── backup_vault.sh       # The weekly automated dump script (Monday 4:00 AM)
+│
+├── 📜 THE LORE & DOCS
+│   ├── README.md             # Repository Documentation
+│   └── LICENSE               # Usage Rights
+│
+├── 🌐 THE ARENA INSTANCES (GHOSTED - HIDDEN FROM GIT)
+│   ├── alpha/                # Xonotic Server Instance 1
+│   ├── beta/                 # Xonotic Server Instance 2
+│   ├── gamma/                # Xonotic Server Instance 3
+│   └── delta/                # Xonotic Server Instance 4
+│
+├── 📦 THE ENVIRONMENT
+│   ├── venv/                 # Isolated Python 3 virtual environment (Ghosted)
+│   ├── .git/                 # Local Version Control repository
+│   └── .gitignore            # The Iron Mask | Blocks .db, .txt, .json, and .bak from uploading

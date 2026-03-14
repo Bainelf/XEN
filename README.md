@@ -46,7 +46,6 @@ They must steal them directly from active rivals.
 ├── ⚙️ THE CLUSTER MANAGEMENT
 │   ├── overseer.sh           # Daemon Manager | Graceful SIGTERM (-15) enabled
 │   ├── overseer.log          # System output for process crashes/restarts
-│   └── backup_vault.sh       # The weekly automated dump script (Monday 4:00 AM)
 │
 ├── 📜 THE LORE & DOCS
 │   ├── README.md             # Repository Documentation

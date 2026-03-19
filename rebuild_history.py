@@ -14,7 +14,6 @@ def apply_decay(ptsA, ptsB, days_gap):
         elif ptsB > ptsA: # pB is leader
             ptsB = max(0, ptsB - 1)
             if total == 9: ptsA = min(9, ptsA + 1)
-        # If tied, no decay happens
     return ptsA, ptsB
 
 def rebuild():
@@ -22,27 +21,20 @@ def rebuild():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
-    # 1. Reset all rivalry points to zero
     c.execute("UPDATE rivalries SET p1_pts = 0, p2_pts = 0")
-    
-    # 2. Get all matches ordered by time
     matches = c.execute("SELECT p1, p2, winner, timestamp FROM matches ORDER BY timestamp ASC").fetchall()
     
-    # Track the last match date for each rivalry pair
     last_match_time = {}
 
     for p1, p2, winner, ts_str in matches:
-        # Normalize pair name (Alphabetical)
         pair = tuple(sorted([p1, p2]))
         pA, pB = pair[0], pair[1]
-        
-        # Parse timestamp
+
         try:
             current_ts = datetime.fromisoformat(ts_str)
         except:
-            continue # Skip if timestamp is corrupt
+            continue
 
-        # Fetch current points from our working memory or DB
         row = c.execute("SELECT p1_pts, p2_pts FROM rivalries WHERE p1_name = ? AND p2_name = ?", (pA, pB)).fetchone()
         if not row:
             c.execute("INSERT INTO rivalries (p1_name, p2_name, p1_pts, p2_pts) VALUES (?, ?, 0, 0)", (pA, pB))
@@ -50,7 +42,6 @@ def rebuild():
         else:
             ptsA, ptsB = row
 
-        # --- STEP 1: APPLY DECAY ---
         if pair in last_match_time:
             gap = (current_ts - last_match_time[pair]).days
             if gap >= 7:
@@ -58,21 +49,19 @@ def rebuild():
         
         last_match_time[pair] = current_ts
 
-        # --- STEP 2: APPLY MATCH WIN (Build-to-9 / Steal Logic) ---
         if winner == pA:
             if ptsA + ptsB < 9:
                 ptsA += 1
-            elif ptsB > 0: # Steal Phase
+            elif ptsB > 0:
                 ptsB -= 1
                 ptsA += 1
         else: # winner == pB
             if ptsA + ptsB < 9:
                 ptsB += 1
-            elif ptsA > 0: # Steal Phase
+            elif ptsA > 0:
                 ptsA -= 1
                 ptsB += 1
         
-        # Save progress
         c.execute("UPDATE rivalries SET p1_pts = ?, p2_pts = ? WHERE p1_name = ? AND p2_name = ?", (ptsA, ptsB, pA, pB))
 
     conn.commit()

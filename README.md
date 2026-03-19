@@ -1,64 +1,85 @@
-# 👁️ THE BEHOLDER
-**Omniscience Protocol (v25 Legacy)**
+# 👁️ THE BEHOLDER [v28.11-STABLE]
+## PROJECT: OMNISCIENCE PROTOCOL
 
-> Standard leaderboards are participation trophies. 
-> Glory is a finite resource. 
-> For you to rise, someone else must fall.
+┌──────────────────────────────────────────────────────────────────────────┐
+│  STATUS: ACTIVE                                       LOC: BORDERWORLD   │
+│  USER: DRUMMER                                        SYSTEM: XONOTIC    │
+└──────────────────────────────────────────────────────────────────────────┘
 
-## ⚙️ Overview
-The Beholder is a multi-server Discord bot for Xonotic. 
-It operates completely outside the game engine. 
-It passively reads UDP network packets and HTTP XonStat pipelines. 
-It monitors Alpha, Beta, Gamma, and Delta servers simultaneously. 
-It enforces a zero-sum, competitive Blood Ledger. 
-Players cannot endlessly farm points. 
-They must steal them directly from active rivals.
+[1.0] FILE SYSTEM TOPOLOGY
+============================================================================
+The Beholder operates within a self-contained environment. 
 
----
-
-## 🩸 Core Architecture & Physical Laws
-
-* **Zero-Sum Economy:** Every 1v1 matchup is a closed 3-point loop. Maxed rivalries force the winner to steal a point from the loser.
-* **7-Day Hemorrhage:** Inactive rivalries rot. Seven days of silence bleeds one point back into the void.
-* **Ironclad Identity:** The database strips all cryptographic masks. It forces absolute uppercase identities across all SQL queries. Alternate casings cannot be used to split your stats.
-* **Omniscience Anti-Spoofing:** The UDP log parser is strictly filtered. In-game chat exploits are actively ignored. Kills cannot be faked.
-* **Live RCON Summoning:** The engine actively pings the Xonotic servers. Stepping into an empty arena broadcasts a matchmaking signal to Discord.
-
----
-
-## 🗺️ System Geometry (ASCII Blueprint)
-
-```text
 /root/The_Beholder/
+├── bot.py ................... The Core Intelligence (Discord & Listeners)
+├── beholder.db .............. The Blood Ledger (SQLite3 Database)
+├── secret.txt ............... OpSec Shield (Discord API Token)
+├── servers.json ............. Arena Target Map (Ports & RCON Credentials)
+├── README.md ................ This Blueprint
 │
-├── 👁️ THE ENGINE
-│   ├── bot.py                # Core Engine (v25 Legacy) | Anti-Spoof, 5s Staging, 7-Day Decay
-│   ├── radar.py              # Auxiliary Tool (Network monitoring)
-│   └── sniffer.py            # Auxiliary Tool (Packet sniffing)
+├── [MANAGEMENT]
+│   ├── overseer.sh .......... Process Guardian (Startup & Recovery)
+│   ├── clean.sh ............. Integrity & Optimization Tool
+│   └── rebuild_history.py ... Math Sync (Recalculates all Shard history)
 │
-├── 🩸 THE BLOOD LEDGER (GHOSTED - HIDDEN FROM GIT)
-│   └── beholder.db           # SQLite Database | Upper-cased identities, Rivalry points
-│
-├── 🛡️ THE OPSEC VAULT (GHOSTED - HIDDEN FROM GIT)
-│   ├── secret.txt            # Discord API Token & Global Secrets
-│   └── servers.json          # RCON Passwords & Port Maps (Alpha, Beta, Gamma, Delta)
-│
-├── ⚙️ THE CLUSTER MANAGEMENT
-│   ├── overseer.sh           # Daemon Manager | Graceful SIGTERM (-15) enabled
-│   ├── overseer.log          # System output for process crashes/restarts
-│
-├── 📜 THE LORE & DOCS
-│   ├── README.md             # Repository Documentation
-│   └── LICENSE               # Usage Rights
-│
-├── 🌐 THE ARENA INSTANCES (GHOSTED - HIDDEN FROM GIT)
-│   ├── alpha/                # Xonotic Server Instance 1
-│   ├── beta/                 # Xonotic Server Instance 2
-│   ├── gamma/                # Xonotic Server Instance 3
-│   └── delta/                # Xonotic Server Instance 4
-│
-├── 📦 THE ENVIRONMENT
-│   ├── venv/                 # Isolated Python 3 virtual environment (Ghosted)
-│   ├── .git/                 # Local Version Control repository
-│   └── .gitignore            # The Iron Mask | Blocks .db, .txt, .json, and .bak from uploading
+└── [ARCHIVE]
+    └── /root/Backups/ ....... The Holy Data Vault (Tarball Restores)
 
+
+[2.0] THE LOGISTICS ENGINE (ATTRITION MATH)
+============================================================================
+The system utilizes a 9-Shard Attrition Pool to track human dominance.
+Unlike ELO, this is a finite resource "Tug-of-War."
+
+      [BUILD PHASE]             [STEAL PHASE]             [TRUE POINTS]
+   (0-8 Shards Total)         (9 Shards Total)         (Calculated / 3)
+  ───────────────────       ───────────────────       ───────────────────
+  Every win adds +1         Wins take -1 from         For every 3 shards
+  to the victor's           loser and add +1          held, +1 True Point
+  side of the pool.         to the victor.            is awarded.
+
+        [SLIDER VISUALIZATION]
+        <  P1 [ ╟──╫──╫──┼──╫──╫──╢ ] P2  >
+                (9 Total Shards)
+
+
+[3.0] COMMAND HIERARCHY
+============================================================================
+
+   [PUBLIC ACCESS]
+   ├── !board ........... Ranks Apex Predators by True Points.
+   ├── !archive ......... Raw Lifetime W/L (Total DB extraction).
+   ├── !slider .......... Visualizes the current 9-shard track.
+   │    └── ALIASES: !tug, !rivalry
+   ├── !profile ......... The "Blood Trail" (Detailed victim list).
+   │    └── ALIASES: !shards, !stats
+   └── !help ............ Manifests the UI categorized help menu.
+
+   [ADMIN OVERSIGHT]
+   └── !fuse ............ Merges match history when names change.
+
+
+[4.0] SYSTEM ARCHITECTURE
+============================================================================
+
+   [INPUTS]                 [ENGINE]                 [STORAGE]
+   ┌──────────┐            ┌──────────────┐         ┌──────────────┐
+   │ UDP 26001│───────────▶│ PYTHON 3.12  │────────▶│ SQLITE 3.db  │
+   ├──────────┤            │ (BOT LOGIC)  │         └──────────────┘
+   │ HTTP 8081│───────────▶│              │                 │
+   └──────────┘            └──────────────┘                 │
+                                  │                         ▼
+                                  └─────────────────▶ [DISCORD API]
+
+
+[5.0] TEMPORAL DECAY PROTOCOL
+============================================================================
+If a rivalry remains dormant for > 7 Days:
+- Leader loses 1 Shard.
+- Opponent gains 1 Shard (if pool is full).
+- The "Puck" shifts back toward the center.
+
+----------------------------------------------------------------------------
+CONCEPT: DRUMMER (BAINELF) | ARCHITECTURE: GEMINI (AI)
+[OMNISCIENCE PROTOCOL INITIALIZED]
+----------------------------------------------------------------------------

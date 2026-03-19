@@ -1,8 +1,13 @@
-venv/
+# Security - NEVER commit these
+secret.txt
+beholder_pre_clean.db.bak
+*.bak
+
+# Data - Keep database out of git (use your Keffrah saves instead)
+beholder.db
+beholder.db-journal
+beholder.db-wal
+
+# System
 __pycache__/
 *.pyc
-beholder.db
-secret.txt
-overseer.log
-backups/
-.env

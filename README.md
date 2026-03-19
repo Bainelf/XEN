@@ -1,18 +1,21 @@
 # 👁️ THE BEHOLDER [v28.11-STABLE]
 ## PROJECT: OMNISCIENCE PROTOCOL
 
-┌──────────────────────────────────────────────────────────┐
-│ STATUS: ACTIVE                         LOC: BORDERWORLD  │
-│ USER: DRUMMER                          SYSTEM: XONOTIC   │
-└──────────────────────────────────────────────────────────┘
+```text
+┌──────────────────────────────────────────────┐
+│ STATUS: ACTIVE             LOC: BORDERWORLD  │
+│ USER: DRUMMER              SYSTEM: XONOTIC   │
+└──────────────────────────────────────────────┘
+```
 
 [1.0] FILE SYSTEM TOPOLOGY
-============================================================
-The Beholder operates within a self-contained environment. 
+================================================
+The Beholder operates within a self-contained environment.
 
+```text
 /root/The_Beholder/
-├── bot.py ............ Core Intelligence (Discord)
-├── beholder.db ....... The Blood Ledger (SQLite3)
+├── bot.py ............ Core Intel (Discord)
+├── beholder.db ....... Blood Ledger (SQL)
 ├── secret.txt ........ OpSec Shield (Token)
 ├── README.md ......... This Blueprint
 │
@@ -22,58 +25,58 @@ The Beholder operates within a self-contained environment.
 │   └── rebuild_history.py .. Math Sync
 │
 └── [ARCHIVE]
-    └── /root/Backups/ .. The Holy Data Vault
+    └── /root/Backups/ .. Data Vault
+```
 
+[2.0] THE LOGISTICS ENGINE
+================================================
+The system utilizes a 9-Shard pool for dominance.
+Unlike ELO, this is a finite "Tug-of-War."
 
-[2.0] THE LOGISTICS ENGINE (ATTRITION MATH)
-============================================================
-The system utilizes a 9-Shard pool for human dominance.
-Unlike ELO, this is a finite resource "Tug-of-War."
-
- [BUILD PHASE]       [STEAL PHASE]      [TRUE POINTS]
-(0-8 Shards Total)  (9 Shards Total)    (Calculated / 3)
-──────────────────  ──────────────────  ──────────────────
-Every win adds +1   Wins take -1 from   Every 3 shards
-to victor's pool.   loser, give to W.   held = 1 TP.
+```text
+ [BUILD PHASE]      [STEAL PHASE]     [TRUE PTS]
+(0-8 Shards)       (9 Shards Max)    (Shards / 3)
+───────────────    ───────────────   ───────────
+Every win +1       Wins take -1      Every 3 held
+to pool.           from loser.       is 1 TP.
 
            [SLIDER VISUALIZATION]
     < P1 [ ╟──╫──╫──┼──╫──╫──╢ ] P2 >
-             (9 Total Shards)
-
+```
 
 [3.0] COMMAND HIERARCHY
-============================================================
+================================================
+```text
 [PUBLIC ACCESS]
-├── !board .... Ranks Apex Predators (True Points).
-├── !archive .. Raw Lifetime W/L (Total History).
-├── !slider ... Visualizes the current 9-shard track.
-│    └── ALIASES: !tug, !rivalry
-├── !profile .. The Blood Trail (Victim list).
-│    └── ALIASES: !shards, !stats
-└── !help ..... Manifests the UI help menu.
+├── !board .... Apex Rankings (True Points).
+├── !archive .. Raw Lifetime W/L History.
+├── !slider ... Visual 9-shard track.
+├── !profile .. Detailed victim list.
+└── !help ..... Categorized help menu.
 
-[ADMIN OVERSIGHT]
-└── !fuse ...... Merges match history on name change.
-
+[ADMIN]
+└── !fuse ..... Merge name history.
+```
 
 [4.0] SYSTEM ARCHITECTURE
-============================================================
-[INPUTS]           [ENGINE]           [STORAGE]
-┌──────────┐      ┌────────────┐     ┌────────────┐
-│ UDP/HTTP │─────▶│ PYTHON 3.12│────▶│ SQLITE 3   │
-└──────────┘      └────────────┘     └────────────┘
-                        │                  │
-                        └───────────▶ [DISCORD API]
-
+================================================
+```text
+[INPUTS]         [ENGINE]          [STORAGE]
+┌────────┐      ┌──────────┐      ┌────────┐
+│ UDP/HTTP│────▶│ PY 3.12  │────▶│ SQLITE │
+└────────┘      └──────────┘      └────────┘
+                    │                 │
+                    └─────────▶ [DISCORD]
+```
 
 [5.0] TEMPORAL DECAY PROTOCOL
-============================================================
-If a rivalry remains dormant for > 7 Days:
-- Leader loses 1 Shard.
-- Opponent gains 1 Shard (if pool is full).
+================================================
+- Dormancy > 7 Days: Leader loses 1 Shard.
 - The "Puck" shifts back toward the center.
 
-------------------------------------------------------------
-CONCEPT: DRUMMER (BAINELF) | ARCHITECTURE: GEMINI (AI)
+```text
+------------------------------------------------
+CONCEPT: DRUMMER | ARCHITECTURE: GEMINI
 [OMNISCIENCE PROTOCOL INITIALIZED]
-------------------------------------------------------------
+------------------------------------------------
+```

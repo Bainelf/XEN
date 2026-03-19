@@ -1,46 +1,8 @@
-# 👁️ OMNISCIENCE SECURITY MASK
-
-# --- Credentials & Secrets ---
-secret.txt
-servers.json
-*.cfg
-
-# --- Databases & Persistence ---
-*.db
-*.db-journal
-*.sqlite
-*.sqlite3
-
-# --- Backups, Archives & Trash ---
-Backups/
-*.tar.gz
-*.zip
-*.7z
-*.save
-*.bak
-*.swp
-*~
-
-# --- Python Environment ---
 venv/
-.env
 __pycache__/
-*.py[cod]
-*$py.class
-
-# --- Logs & Arena Instances ---
-*.log
-alpha/
-beta/
-gamma/
-delta/
-
-# --- OS & IDE Junk ---
-.DS_Store
-.thumbs
-desktop.ini
-.vscode/
-.idea/
-
-backup_vault.sh
-
+*.pyc
+beholder.db
+secret.txt
+overseer.log
+backups/
+.env

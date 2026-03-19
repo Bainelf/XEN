@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # ==========================================
-#   TACTICAL DATA PRESERVATION - SUBDOMINA KHEPRA
+#  TACTICAL DATA PRESERVATION - SUBDOMINA KHEPRA
 # ==========================================
 
 # --- TACTICAL COGITATOR PARAMETERS ---
 BACKUP_DIR="/root/Backups"
 PROJECT_DIR="/root/The_Beholder"
-WEBHOOK_URL="https://discord.com/api/webhooks/1482615046096945206/L5Xx0vaaBfPoyljJT9A0hOzilRdiDm-qWMgy9TrN2wyETduMVpeGr6drE5hg-KcAz4n1" # <--- INSERT NOOSPHERE LINK HERE
+WEBHOOK_URL=$(cat "$PROJECT_DIR/webhook.txt")
 DATE=$(date +%Y%m%d_%H%M)
 ARCHIVE_NAME="Holy_Data_Vault_$DATE.tar.gz"
 
@@ -49,4 +49,3 @@ EOF
 curl -s -H "Content-Type: application/json" -X POST -d "$payload" "$WEBHOOK_URL"
 
 echo "[$(date)] Transmission complete. Praise the Omnissiah."
-

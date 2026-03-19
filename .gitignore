@@ -11,3 +11,13 @@ beholder.db-wal
 # System
 __pycache__/
 *.pyc
+venv/
+
+# OpSec - Private credentials
+servers.json
+
+# Clutter - Runtime logs
+*.log
+overseer.log
+webhook.txt
+webhook.txt

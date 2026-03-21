@@ -1,10 +1,10 @@
 # ==============================================================================
-# 👁️ THE BEHOLDER - EMERALD GAZE (v28.11-STABLE)
+# 👁️ THE BEHOLDER - EMERALD GAZE (v28.12-STABLE)
 # ==============================================================================
 # Architecture: Gemini (AI) | Concept: Drummer (BAINELF)
 # RESTORED: Exact, uncut original logic from v28.9. No amputations.
-# FIXED: Dynamic field chunking to prevent Discord 1024-character limit crashes.
-# FIXED: Markdown escaping applied to player names to prevent font corruption.
+# FIXED: Warmup kill-counting neutralized via correct Xonotic event sequence.
+# REMOVED: Legacy "BLOODBATH" logic.
 # ==============================================================================
 
 import discord
@@ -26,7 +26,7 @@ except FileNotFoundError:
     print("❌ FATAL: 'secret.txt' missing. The Eye remains closed.")
     exit()
 
-VERSION = "28.11-Stable"
+VERSION = "28.12-Stable"
 HAS_STARTED = False
 
 # --- DATABASE INITIALIZATION ---
@@ -143,7 +143,8 @@ class ArenaTracker:
 
         self.state = {
             "id_map": {}, "conn_map": {}, "frags": {}, "deaths": {}, "acc": {},
-            "intermission": False, "welcomed": set(), "disconnect_tasks": {}, "current_map": "Unknown"
+            "intermission": False, "welcomed": set(), "disconnect_tasks": {}, "current_map": "Unknown",
+            "match_active": False # 🔒 THE LOCK
         }
 
     def rcon_say(self, msg: str):
@@ -195,26 +196,6 @@ class ArenaTracker:
         if not scoreboard: return
 
         map_n = self.state["current_map"]
-
-        if self.name == "BLOODBATH":
-            self.rcon_say(f"^1[CARNAGE] ^7The bloodbath on ^5{map_n}^7 has concluded!")
-            e = discord.Embed(title="🩸 BLOODBATH REPORT", color=0x8B0000)
-            e.description = f"**Arena:** `{self.name}` | **Map:** `{map_n}`"
-            
-            board_txt = ""
-            rank = 1
-            for p_n, p_f, p_id in scoreboard:
-                if not is_human(p_n) and p_f == 0: continue
-                p_a = self.state["acc"].get(p_id, "0.0")
-                p_d = self.state["deaths"].get(p_id, 0)
-                board_txt += f"**{rank}. {p_n}** ➔ 💀 `{p_f}` Kills | 🎯 `{p_a}%` Acc | ☠️ `{p_d}` Deaths\n"
-                rank += 1
-                
-            if not board_txt: board_txt = "*Automaton skirmish. No human blood drawn.*"
-            e.add_field(name="📜 THE FINAL TALLY", value=board_txt, inline=False)
-            e.set_footer(text=f"The Beholder v{VERSION} | Omniscience Protocol")
-            await global_broadcast(embed=e)
-            return
 
         if len(scoreboard) < 2: return
         w_n, w_f, w_id = scoreboard[0][0], scoreboard[0][1], scoreboard[0][2]
@@ -272,6 +253,12 @@ class ArenaTracker:
                         try: self.state["current_map"] = raw.split(":gamestart:")[1].split(":")[0]
                         except Exception: pass
                         self.state["frags"], self.state["deaths"], self.state["acc"], self.state["intermission"] = {}, {}, {}, False
+                        self.state["match_active"] = False # 🔒 WARMUP STARTS HERE, LOCK IS CLOSED
+
+                    elif ":restart" in raw:
+                        # 🔓 THE WARMUP IS OVER, THE REAL MATCH BEGINS
+                        self.state["frags"], self.state["deaths"], self.state["acc"] = {}, {}, {} # Purge warmup kills
+                        self.state["match_active"] = True 
 
                     elif ":join:" in raw:
                         try:
@@ -298,9 +285,8 @@ class ArenaTracker:
                                         
                                         await global_broadcast(content=f"Human blood detected. `{p}` entered **{str(s.name)}**.", mention_drilla=True)
                                         s.rcon_say(f"^2[THE BEHOLDER] ^7Human blood detected: ^3{p}")
-                                        if s.name != "BLOODBATH":
-                                            s.rcon_say("^2[MATCHMAKING] ^7Online. The Discord has been notified.")
-                                            s.rcon_say("^5[DISCORD] ^7Join the ACC-INTL Arena here: https://discord.gg/7qAh6rXsFY")
+                                        s.rcon_say("^2[MATCHMAKING] ^7Online. The Discord has been notified.")
+                                        s.rcon_say("^5[DISCORD] ^7Join the ACC-INTL Arena here: https://discord.gg/7qAh6rXsFY")
                                     bot.loop.create_task(delayed_join())
                         except Exception: pass
 
@@ -315,6 +301,7 @@ class ArenaTracker:
                         except Exception: pass
 
                     elif ":kill:frag:" in raw:
+                        if not self.state.get("match_active", False): continue # 🛡️ BOUNCER
                         try:
                             d = raw.split(":kill:frag:")[1].split(":")
                             if d[0] in self.state["id_map"]: self.state["frags"][d[0]] += 1
@@ -322,6 +309,7 @@ class ArenaTracker:
                         except Exception: pass
 
                     elif ":kill:suicide:" in raw or ":kill:tk:" in raw:
+                        if not self.state.get("match_active", False): continue # 🛡️ BOUNCER
                         try:
                             tag = ":kill:suicide:" if ":kill:suicide:" in raw else ":kill:tk:"
                             d = raw.split(tag)[1].split(":")
@@ -329,6 +317,7 @@ class ArenaTracker:
                         except Exception: pass
 
                     elif ":gameover" in raw:
+                        self.state["match_active"] = False # 🔒 MATCH OVER, LOCK CLOSED
                         bot.loop.create_task(self.publish_judgment())
             except Exception:
                 await asyncio.sleep(0.1)
@@ -349,7 +338,7 @@ async def slider(ctx, p1_search: str, p2_search: str):
     
     target = None
     
-    # Priority 1: Exact match check (prevents partial mismatches like EKKO matching ⚠EkkO⚠)
+    # Priority 1: Exact match check
     for r in rivalries:
         db_p1 = r[0].lower()
         db_p2 = r[1].lower()
@@ -357,7 +346,7 @@ async def slider(ctx, p1_search: str, p2_search: str):
             target = r
             break
             
-    # Priority 2: Substring match check (the original behavior)
+    # Priority 2: Substring match check
     if not target:
         for r in rivalries:
             db_p1 = r[0].lower()
@@ -426,8 +415,7 @@ async def fuse(ctx, old_name: str, new_name: str):
         c.execute("UPDATE matches SET winner = ? WHERE UPPER(winner) = ?", (new_name, old_n))
         c.execute("UPDATE matches SET loser = ? WHERE UPPER(loser) = ?", (new_name, old_n))
         
-        # Update Rivalry Names (Math is too complex to merge, so we delete old rivalry entries 
-        # and recommend running rebuild_history.py after a fuse)
+        # Update Rivalry Names
         c.execute("DELETE FROM rivalries WHERE UPPER(p1_name) = ? OR UPPER(p2_name) = ?", (old_n, old_n))
         conn.commit()
         
